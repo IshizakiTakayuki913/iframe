@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hello, World! with subwindow</title>
+    <meta name="description" content="Hello, World! - A-Frame">
+    <script src="https://aframe.io/releases/0.3.2/aframe.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./style.css"></link>
+    <script>
+      // サブWindow内のユーザ情報。変数の取り回しがわからないためグローバルに持たせる。改善したい。
+      var user;
+
+      // カメラエンティティの位置情報をサブWindowのユーザと同期させるコンポーネント
+      // コンポーネント名がキャメル形式だと動いてくれない不思議。
+      AFRAME.registerComponent('sync-user', {
+        schema: {
+          userId: {default: "userPosition"},
+        },
+
+        init: function() {
+          this.camera = this.el;
+          var userId = this.data.userId;
+          document.getElementById("iframe").onload = function(e) {
+            var doc = this.contentDocument;
+            // iframeElem[0].contentDocument || iframeElem[0].contentWindow.document;
+
+            console.log(`userId [${userId}]  doc[${doc}]`)
+            // TODO:このuser変数をAFRAME.registerComponent内のスコープにできないか？
+            user = doc.getElementById(userId);
+          }
+        },
+
+        tick: function(e) {
+            if ((typeof user !== "undefined") && (user != null)) {
+              var pos = this.camera.getAttribute("position");
+              var rot = this.camera.getAttribute("rotation");
+              user.setAttribute("position", pos);
+              user.setAttribute("rotation", {"x":0, "y":rot.y, "z": 0});
+            }
+        }
+      });
+    </script>
+
+  </head>
+  <body>
+    <a-scene id="sceneId" class="aframe-scene">
+      <a-entity id="camera" camera="userHeight: 1.6;" look-controls wasd-controls sync-user="userId: userPosition"></a-entity>
+      <a-box id="box" position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+      <a-sphere id="sphere" position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-cylinder id="cylinder" position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+      <a-plane id="plane" position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+      <a-sky color="#ECECEC"></a-sky>
+    </a-scene>
+    <div class="subwindow">
+      <iframe id="iframe" src="./index2.html"></iframe>
+    </div>
+
+  </body>
+</html>

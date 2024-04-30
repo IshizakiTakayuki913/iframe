@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hello, World! - A-Frame</title>
+    <meta name="description" content="Hello, World! - A-Frame">
+    <script src="https://aframe.io/releases/0.3.2/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene id="sceneId" class="aframe-scene" vr-mode-ui="enabled: false">
+      <a-sphere id="userPosition" position="0 0 0" rotation="0 0 0" radius=0.25 color="#0000FF">
+        <a-entity position="0 3 3" rotation="-30 0 0">
+          <a-entity camera="userHeight: 0"></a-entity>
+        </a-entity>
+      </a-sphere>
+      <a-box id="box" position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-box>
+      <a-sphere id="sphere" position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-cylinder id="cylinder" position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+      <a-plane id="plane" position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+      <a-sky color="#ECECEC"></a-sky>
+    </a-scene>
+  </body>
+</html>
